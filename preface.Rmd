@@ -1,0 +1,42 @@
+# Preface
+
+<span style="font-variant:small-caps; font-size:150%"></span>This document's original purpose was to serve as the basis for a workshop on <span class="emph">structural equation modeling</span> held over a couple of afternoons.  However, it is now more or less a document on graphical and latent variable modeling more generally. Most of it will not be covered in the workshop in detail, and will continue to be expanded upon over time. 
+
+One of the goals of this set of notes is to *not* impart a false sense of comfort and/or familiarity with the techniques. For example, no one is going to be an expert after a couple of afternoons with SEM.  SEM and related methods are typically taught over the course of a few weeks in a traditional applied statistics course, or even given their own course outright.  Instead, one of the primary goals here is to instill a firm conceptual foundation starting with common approaches (e.g. standard regression), while exposing the participant to a wide family of related techniques, any of which might be useful to one's modeling and data situation, but may or may not traditionally fall under the heading of traditional SEM topics.  While the focus is still on SEM, it is just as important in my opinion to expand the range of techniques beyond SEM for those who might not otherwise be exposed to them.
+
+
+At this point I can more or less break down the focus of the sections of this document in a couple of ways.
+
+- Mediation/path analysis: graphical models
+- SEM: graphical models, latent variables, SEM, latent growth curves, IRT
+- Measurement models/Reliability: latent variables, IRT
+- Factor Analysis/Latent variables: latent variables, mixture models, Bayesian nonparametric models, topic models
+
+
+
+
+## Prerequisites 
+
+The following prerequisites are more for those attending the workshop where time and resources are limited.  While they might apply to anyone attempting to learn SEM, and should give you a sense of what knowledge/skill is assumed, I encourage anyone to read through the notes on their own regardless of background if they are of interest.
+
+### Statistical
+
+One should at least have a *firm* understanding of standard regression modeling techniques. If you are new to statistical analysis in general, I'll be blunt and say you are probably not ready for SEM.  SEM employs knowledge of maximum likelihood, multivariate analysis, measurement error, indirect effects etc., and none of this is typically covered in a first semester of statistics in many applied disciplines.  SEM builds upon that basic regression foundation, and if that is not solid, SEM will probably be confusing and/or magical at best.  
+
+The first two sections on graphical modeling and latent variables are more or less stand alone and have no prerequisite beyond that just described. The SEM section assumes the knowledge within those two.  The sections beyond section are more technical and/or code-oriented, but still can simply be read to get the gist of the content.
+
+### Programming
+
+SEM requires its own modeling language approach.  As such, the syntax for Mplus and SEM specific programs, as well as SEM models within other languages or programs (e.g. R or Stata) are going to require you to learn something new.  If you are not familiar with R, you'll want to go through the R introduction to get oriented, but there are many intros on the web to get you started with more detail.
+
+
+
+
+
+Color coding in text:
+
+- <span class="emph">emphasis</span>
+- <span class="pack">package</span>
+- <span class="func">function</span>
+- <span class="objclass">object/class</span>
+- [link]()

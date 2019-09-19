@@ -1,0 +1,796 @@
+# Appendix
+
+## Data Set Descriptions
+
+### McClelland 
+
+#### Description
+
+- McClelland et al. (2013) abstract 
+
+> This study examined relations between children's attention span-persistence in preschool and later school achievement and college completion. Children were drawn from the Colorado Adoption Project using adopted and non-adopted children (N = 430). Results of structural equation modeling indicated that children's age 4 attention span-persistence significantly predicted math and reading achievement at age 21 after controlling for achievement levels at age 7, adopted status, child vocabulary skills, gender, and maternal education level. Relations between attention span-persistence and later achievement were not fully mediated by age 7 achievement levels. Logistic regressions also revealed that age 4 attention span-persistence skills significantly predicted the odds of completing college by age 25. The majority of this relationship was direct and was not significantly mediated by math or reading skills at age 7 or age 21. Specifically, children who were rated one standard deviation higher on attention span-persistence at age 4 had 48.7% greater odds of completing college by age 25. Discussion focuses on the importance of children's early attention span-persistence for later school achievement and educational attainment.
+
+#### Reference
+
+McClelland, Acock, Piccinin, Rheac, Stallings. (2013). Relations between preschool attention span-persistence and age 25 educational outcomes. [link](http://www.sciencedirect.com/science/article/pii/S0885200612000762) Note that there is only one age 25 outcome (college completion) and two age 21 outcomes.
+
+The following models duplicate the paper results. Additional non-mediation models are provided for comparison.
+
+```{r mcclellandDuplicaet, eval=FALSE}
+modReading = "
+  read21 ~ rr*read7 + ar21*attention4 + vocab4 + male + adopted + momed
+  read7 ~ ar7*attention4
+
+  # in
+  att4_read21 := ar7*rr
+"
+reading  = sem(modReading, data=mcclelland, missing='fiml', mimic = 'Mplus', std.ov=TRUE, se ='boot')
+summary(reading, rsquare=TRUE)
+
+modRead = "
+  read21 ~ read7 + attention4 + vocab4 + male + adopted + momed
+
+"
+readnomed  = sem(modread, data=mcclelland, missing='fiml', mimic = 'Mplus', std.ov=TRUE, se ='boot')
+AIC(read, readnomed)
+
+
+modMath = "
+  math21 ~ mm*math7 + am21*attention4 + vocab4 + male + adopted + momed
+  math7 ~ am7*attention4
+
+  # in
+  att4_math21 := am7*mm
+"
+math  = sem(modMath, data=mcclelland, missing='fiml', mimic = 'Mplus', std.ov=TRUE, se ='boot')
+summary(math, rsquare=TRUE, fit=T)
+
+modMath = "
+  math21 ~ math7 + attention4 + vocab4 + male + adopted + momed
+
+"
+mathnomed  = sem(modMath, data=mcclelland, missing='fiml', mimic = 'Mplus', std.ov=TRUE, se ='boot')
+AIC(math, mathnomed)
+```
+
+
+### National Longitudinal Survey of Youth (1997, NLSY97)
+
+#### Description
+
+NLSY97 consists of a nationally representative sample of approximately 9,000 youths who were 12 to 16 years old as of December 31, 1996. Round 1 of the survey took place in 1997. In that round, both the eligible youth and one of that youth's parents received hour-long personal interviews. In addition, during the screening process, an extensive two-part questionnaire was administered that listed and gathered demographic information on members of the youth's household and on his or her immediate family members living elsewhere. Youths are interviewed on an annual basis. 
+
+The NLSY97 is designed to document the transition from school to work and into adulthood. It collects extensive information about youths' labor market behavior and educational experiences over time. Employment information focuses on two types of jobs, "employee" jobs where youths work for a particular employer, and "freelance" jobs such as lawn mowing and babysitting. These distinctions will enable researchers to study effects of very early employment among youths. Employment data include start and stop dates of jobs, occupation, industry, hours, earnings, job search, and benefits. Measures of work experience, tenure with an employer, and employer transitions can also be obtained. Educational data include youths' schooling history, performance on standardized tests, course of study, the timing and types of degrees, and a detailed account of progression through post-secondary schooling.
+
+#### Reference
+
+[Bureau of Labor Statistics](http://www.bls.gov/nls/nlsy97.htm)
+
+
+### Wheaton 1977 data 
+
+#### Description
+
+> Longitudinal data to develop a model of the stability of alienation from 1967 to 1971, accounting for socioeconomic status as a covariate. Each of the three factors have two indicator variables, SES in 1966 is measured by education and occupational status in 1966 and alienation in both years is measured by powerlessness and anomia.
+
+#### Reference
+
+Wheaton, B., Muthen B., Alwin, D., & Summers, G., 1977, "Assessing reliability and stability in panel models", in D. R. Heise (Ed.), _Sociological Methodology 1977_ (pp. 84-136), San Francisco: Jossey-Bass, Inc. 
+
+
+
+### Harman 5
+
+
+#### Description
+
+"data...were taken (not entirely arbitrarily) from a study of the Los Angeles Standard Metropolitan Statistical Area. The twelve individuals are used in the examples are census tracts." 
+
+Included are:
+
+- Total population
+- Median school years
+- Total employment
+- Miscellaneous professional services
+- Median house value
+
+
+#### Reference 
+
+Harman, H. *Modern Factor Analysis*. [Google Books link](https://books.google.com/books?id=e-vMN68C3M4C&printsec=frontcover&dq=modern+factor+analysis+harman&hl=en&sa=X&ved=0ahUKEwiDpvyXjOXRAhVD9YMKHZgACxQQ6AEIHDAA#v=snippet&q=employment&f=false)
+
+### Big Five
+
+#### Description
+
+25 personality self report items regarding five factors- Agreeableness, Conscientiousness, Extroversion, Neuroticism, and Openness - taken from the International Personality Item Pool (ipip.ori.org) were included as part of the Synthetic Aperture Personality Assessment (SAPA) web based personality assessment project. The data from 2800 subjects are included here as a demonstration set for scale construction, factor analysis, and Item Response Theory analysis. Three additional demographic variables (sex, education, and age) are also included.
+
+- **A1**: Am indifferent to the feelings of others. (q_146)
+- **A2**: Inquire about others' well-being. (q_1162)
+- **A3**: Know how to comfort others. (q_1206)
+- **A4**: Love children. (q_1364)
+- **A5**: Make people feel at ease. (q_1419)
+- **C1**: Am exacting in my work. (q_124)
+- **C2**: Continue until everything is perfect. (q_530)
+- **C3**: Do things according to a plan. (q_619)
+- **C4**: Do things in a half-way manner. (q_626)
+- **C5**: Waste my time. (q_1949)
+- **E1**: Don't talk a lot. (q_712)
+- **E2**: Find it difficult to approach others. (q_901)
+- **E3**: Know how to captivate people. (q_1205)
+- **E4**: Make friends easily. (q_1410)
+- **E5**: Take charge. (q_1768)
+- **N1**: Get angry easily. (q_952)
+- **N2**: Get irritated easily. (q_974)
+- **N3**: Have frequent mood swings. (q_1099)
+- **N4**: Often feel blue. (q_1479)
+- **N5**: Panic easily. (q_1505)
+- **O1**: Am full of ideas. (q_128)
+- **O2**: Avoid difficult reading material.(q_316)
+- **O3**: Carry the conversation to a higher level. (q_492)
+- **O4**: Spend time reflecting on things. (q_1738)
+- **O5**: Will not probe deeply into a subject. (q_1964)
+- **gender**: Males = 1, Females =2
+- **education**: 1 = HS, 2 = finished HS, 3 = some college, 4 = college graduate 5 = graduate degree
+- **age**: age in years
+
+#### Reference
+
+Goldberg, L.R. (1999) A broad-bandwidth, public domain, personality inventory measuring the lower-level facets of several five-factor models. In Mervielde, I. and Deary, I. and De Fruyt, F. and Ostendorf, F. (eds) Personality psychology in Europe. 7. Tilburg University Press. Tilburg, The Netherlands.
+
+Revelle, W., Wilt, J., and Rosenthal, A. (2010) Individual Differences in Cognition: New Methods for examining the Personality-Cognition Link In Gruszka, A. and Matthews, G. and Szymura, B. (Eds.) Handbook of Individual Differences in Cognition: Attention, Memory and Executive Control, Springer.
+
+
+### Old Faithful
+
+#### From the R helpfile
+
+Waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA. A closer look at faithful$eruptions reveals that these are heavily rounded times originally in seconds, where multiples of 5 are more frequent than expected under non-human measurement. For a better version of the eruption times, see the example below.
+
+There are many versions of this dataset around: Azzalini and Bowman (1990) use a more complete version.
+
+### Harman 1974
+
+#### Description
+
+A correlation matrix of 24 psychological tests given to 145 seventh and eight-grade children in a Chicago suburb by Holzinger and Swineford.
+
+#### Reference
+
+Harman, H. H. (1976) Modern Factor Analysis, Third Edition Revised, University of Chicago Press, Table 7.4.
+
+### Marsh & Hocevar 1985
+
+#### Description
+
+Data collected using the Self-Description Questionnaire and includes sixteen subscales designed to measure nonacademic status: four intended to measure self-perception of physical ability, four intended to measure self-perception of physical appearance, four intended to measure quality of relations with peers, and four intended to measure quality of relations with parents. The *.dta file has summary  statistics based on 134 students in grade 4 and 251 students in grade 5 from Sydney, Australia. Group 1 is grade 4, group 2 is grade 5.  It's used as an example in the SEM reference manual for Stata.
+
+#### Reference
+
+Marsh, H. W. and Hocevar, D., (1985). "Application of confirmatory factor analysis to the study of self-concept: First- and higher order factor models and their invariance across groups", _Psychological Bulletin_, 97: 562-582.
+
+
+### Abortion Attitudes
+
+#### Description
+The data contain responses given by 410 individuals to four out of seven items concerning attitude to abortion. A small number of individual did not answer to some of the questions and this data set contains only the complete cases.  379 individuals answered to the following questions after being asked if the law should allow abortion under the circumstances presented under each item.
+
+- Item 1: The woman decides on her own that she does not.
+- Item 2: The couple agree that they do not wish to have a child.
+- Item 3: The woman is not married and does not wish to marry the man.
+- Item 4: The couple cannot afford any more children.
+
+#### Reference
+
+McGrath, K. and Waterton, J. (1986) British social attitudes, 1983-86 panel survey.
+
+## Terminology in SEM
+
+This just puts the terminology sections of the previous chapters together in one place.
+
+
+- **Latent variable**: an unobserved or hidden variable.  It's specific interpretation will depend on the modeling context. aka factor, construct, etc.
+- **Factor Analysis**: in the SEM literature, this refers to a latent variable (measurement) model to assess the underlying construct behind the correlations among a set of observed variables.  Elsewhere it may refer to a very broad family of matrix factorization techniques that would include things like principal components analysis, non-negative matrix factorization, etc.
+- **Item**, **Indicator**, **Observed**, **Manifest**, **Variable**:   Terms I use interchangeably within the context of factor analysis.
+- **Loadings**: measures of the relationship between an indicator and the latent variable. For clarity, it's probably better to use *pattern* or *structure* coefficient.
+- **Pattern coefficient**: What is usually displayed in FA results. The path coefficient from a latent variable to some observed variable. In some cases it is a simple correlation coefficient.
+- **Structure coefficient**: The correlation between an observed an latent variable.
+- **Communality**: the amount of variance in the item/variable explained by the (retained) components. It is the sum of the squared loadings.
+- **Uniqueness**: 1 - communality. The unexplained variance of a variable. See disturbance.
+- **Identification**: Refers to whether a unique solution can possibly be estimated for a given model. Models may be under-, over- or just-identified.  It is a function of the model specification rather than the data.
+- **Fit**: Model fit is something very difficult to ascertain in SEM, and notoriously problematic in this setting, where all proposed cutoffs for a good fit are ultimately arbitrary.  Even if one had most fit indices suggesting a 'good' fit, there's little indication the model has predictive capability.
+- **Endo/Exogenous**: Endogenous variables are determined by other variables, i.e. have an arrow pointing at their node. Exogenous variables have no analyzed causes.
+- **Disturbance**: residual variance. Includes measurement error and unknown causes.
+- **Mixture Models**: models using categorical latent variables.
+- **Growth Curve Models**: models for longitudinal data setting.
+- **Growth Mixture Models**: combines growth curves and mixture models.  Sometimes called latent trajectory
+- **Multiple group models**: I'll let you guess.  Usually involves tests of measurement invariance, or the ability for measurement models to hold up in different settings.
+- **Single indicator models**: In some circumstances, and with the appropriate constraints, a latent variable can have a single indicator.
+- **Non-/Recursive models**:  have all unidirectional causal effects and disturbances are not correlated. A model is considered nonrecursive if there is a reciprocal relationship, feedback loop, or correlated disturbance in the model
+- **Modification Indices**: A good way to further overfit the data without adding any explanatory power, since most will regard correlating residuals.
+
+
+### Problematic and/or not very useful terms 
+
+This section is based on my opinion, but also on what I see in consulting that confuses clients and muddies their thinking time and time again.  Honestly, give researchers and methodologists enough time and they will invent a unique term for every model one can think of, and applied researchers are already taught statistics poorly enough to not be able to see the bigger picture that ties many models together under one framework. The graphical depiction of your model should be clear enough to note what types of variables and paths are involved, and models do not require a new name due to slight adjustments of previous ones.
+
+- **Exploratory vs. Confirmatory**: This distinction is problematic.  Science and data analysis is inherently exploratory, and most who use SEM do some model exploration as they would with any other model.  Some SEM models have more constraints than others, but that does not require a separate name or way of thinking about the model.
+- **Mediation**: an indirect effect, e.g. A->B->C, A has an indirect effect on C. A can have a direct effect on C too. The term mediation should be reserved for explicitly causal scenarios.
+- **Moderation**: an interaction (the same ones utilized in a standard regression modeling) but with specific constraints on the relationships of the moderator and other variables.  The term Moderation should be reserved for explicitly causal scenarios. 
+
+See the [terminology section][Terminology issues] in the graphical models chapter for more detail.
+
+- **Exploratory SEM**: a term as useful as 'exploratory' [factor analysis][Exploratory vs. Confirmatory].  
+- **Fully vs. Partially Latent SEM**: see previous.
+- **MIMIC Model**: see previous.  Honestly, what's the difference between a MIMIC and partially latent model except for calling one of the observed variables an indicator?
+
+
+With categorical data:
+
+```{r lcterminology2, echo=FALSE}
+tab = data_frame(`Indicator Categorical`=c('Latent Class', 'Latent Trait'),
+                 `Indicator Continuous`=c('Latent Profile', 'Factor Analysis'))
+rownames(tab) = c("Latent Categorical", 'Latent Continuous')
+DT::datatable(tab, autoHideNavigation=T, options=list(paging=F, searching=F, ordering=F, info=F, 
+                                                      columnDefs = list(list(className = 'dt-left', targets = 0:2))) )
+```
+
+Aside from noting whether the latent variable is categorical or not, these aren't very enlightening, and in the end, it's all just 'latent variable analysis'.
+
+
+
+
+## Lavaan Output Explained
+
+Here I provided the most detailed output from an SEM with lavaan with each component explained.
+
+```{r lavoutputExplained, echo=FALSE}
+wheaton.cov = as.matrix(read.csv('data/wheaton_cov.csv', row.names=1))
+
+# the model
+wheaton.model = '
+  # measurement model
+    ses     =~ education + sei
+    alien67 =~ anomia67 + powerless67
+    alien71 =~ anomia71 + powerless71
+ 
+  # structural model
+    alien71 ~ aa*alien67 + ses
+    alien67 ~ sa*ses
+ 
+  # correlated residuals
+    anomia67 ~~ anomia71
+    powerless67 ~~ powerless71
+
+  # Indirect effect
+    IndirectEffect := sa*aa
+'
+
+alienation <- sem(wheaton.model, sample.cov=wheaton.cov, sample.nobs=932)
+summary(alienation, fit=T, standardized=T, rsq=T)
+```
+
+```{r lavaan_iterations, echo=FALSE}
+cat("lavaan (0.5-22) converged normally after  73 iterations")
+```
+
+The first is the iterations, i.e. how many steps the estimation process took to arrive at the final conclusion for parameter estimates. It could potentially be a useful diagnostic if, for example, an alteration to the model resulted in many more iterations, but this is highly dependent on a number of things.  To understand more about this you'd need to get more familiar with maximum likelihood estimation.
+
+```{r lavaan_observations, echo=FALSE}
+cat("  Number of observations                           932")
+```
+
+Next is the sample size, which you should check against your expectations.  You will get two values if you did some something to deal with missing values. One will regard the complete cases only, the other larger one will regard the full data.  As with every other modeling setting, larger samples will result in smaller standard errors, all else being equal.
+
+```{r lavaan_chisq, echo=FALSE}
+cat("  Estimator                                         ML
+  Minimum Function Test Statistic                4.735
+  Degrees of freedom                                 4
+  P-value (Chi-square)                           0.316")
+```
+
+The next part regards the estimation technique along with the standard $\mathcal{\chi}^2$ test that is reported in all SEM studies. This first line tells us we're doing standard maximum likelihood estimation.  Much of the output following will be duplicated if you run a robust version, as it will give you both the standard ML output and the robust results. The `Minimum Function Test Statistic` is the $\mathcal{\chi}^2$ value. The degrees of freedom are essentially the number of observations in terms of covariances and variances minus the number of 'free' parameters, i.e. the number of parameters estimated. Recall that when these are equal, the model is *just-identified*, and the fit is perfect.  If it's negative, the model is *under-identified* and you will need to go back to the drawing board.  In general, this reflects how far away the model implied covariance matrix is from the observed covariance matrix. See the [SEM chapter][Chi-square test] for more information.
+
+```{r lavaan_baseline, echo=FALSE}
+cat("Model test baseline model:
+
+  Minimum Function Test Statistic             2133.722
+  Degrees of freedom                                15
+  P-value                                        0.000")
+```
+
+The `Model test baseline model` is another $\mathcal{\chi}^2$ test essentially comparing the model fit vs. a model that assumes no covariances among the data, i.e. the worst-fitting model.  As such, this is similar to the model test result we get in standard regression settings, where the null model is an intercept-only model.  It should be statistically significant, but one shouldn't be doing cartwheels in the streets if it is.  However, one can use it to test an another (nested) <span class="objclass">lavaan model</span> result for statistical comparison.
+
+```{r lavaan_fit, echo=FALSE}
+cat("User model versus baseline model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       0.999")
+```
+
+Next are two of many fit indices, several of which are based on the previous test.  See the [fit section][CFI etc.] for more detail.
+
+```{r lavaan_loglikelihood, echo=FALSE}
+cat("Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)             -15213.274
+  Loglikelihood unrestricted model (H1)     -15210.906")
+```
+
+Next is the log likelihood values that go into the initial $\mathcal{\chi}^2$. If you multiply their values by two and take the difference, you'll get the `Minimum Function Test Statistic`.  Note that your model is the null model here, and is compared to an unrestricted, i.e. saturated model.
+
+```{r lavaan_ic, echo=FALSE}
+cat("  Number of free parameters                         17
+  Akaike (AIC)                               30460.548
+  Bayesian (BIC)                             30542.783
+  Sample-size adjusted Bayesian (BIC)        30488.792")
+```
+
+Now we see how many parameters were estimated and information criteria.  See if you can look at the results of the coefficients etc. further down to come up with the value of `r alienation@Fit@npar`. The information criteria, which are not in any way specific to SEM and are widely used for model comparison, are based on the log-likelihood, but add a penalty for the number of parameters estimated.  For example, $\textrm{AIC} = -2\mathcal{L} + 2k$, i.e. 2 times the 'user model' log-likelihood plus the log of the number of parameters estimated. The others are variations on this theme. See the [fit indices section][AIC].
+
+```{r lavaan_rmsea, echo=FALSE}
+cat("Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.014
+  90 Percent Confidence Interval          0.000  0.053
+  P-value RMSEA <= 0.05                          0.930
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.007")
+```
+
+These are discussed in the [fit indices section][RMSEA].
+
+```{r lavaan_se, echo=FALSE}
+cat("Parameter Estimates:
+
+  Information                                 Expected
+  Standard Errors                             Standard")
+```
+
+This bit of information that starts the parameter estimates section of output regards how the standard errors are calculated. As an example, one might desire bootstrapped standard errors, and this would be noted here, along with the number of bootstrap iterations.
+
+The rest regards the parameter estimates, i.e. the paths, variances, covariances, and possibly 'intercepts' if examination of mean structure is desired (e.g. as in growth curve models), and these may regard both latent and observed variables.  We will also get any user-defined parameter estimates.  See any of the previous sections for more detail.
+
+## Code Examples
+
+### Factor Analysis via Maximum Likelihood
+
+On GitHub I have some [R code](https://github.com/m-clark/Miscellaneous-R-Code/blob/master/ModelFitting/cfa_ml.R) I've put together that will estimate a factor analysis via maximum likelihood, i.e. a 'by-hand' approach fully within R. It will simulate some data for two correlated factors with four indicators each, and produce raw (function shown below) and standardized loadings, the log-likelihood, AIC, and BIC.  It will also compare these results to <span class="pack">lavaan</span> output for the same data, as well as provide the corresponding Mplus code.
+
+
+```{r cfaML, eval=FALSE}
+# measurement model, covariance approach
+cfa.cov = function (parms, data) {
+  # Arguments- parms: initial values (named); data: raw data
+  # Extract paramters by name
+  
+  require(psych) # for tr
+  
+  l1 = c(1, parms[grep('l1', names(parms))])      # loadings for factor 1
+  l2 = c(1, parms[grep('l2', names(parms))])      # loadings for factor 2
+  cov0 = parms[grep('cov', names(parms))]         # factor covariance, variances
+  
+  # Covariance matrix
+  S = cov(data)*((nrow(data)-1)/nrow(data))       # ML covariance div by N rather than N-1, the multiplier adjusts
+  
+  # loading estimates
+  lambda = cbind(c(l1, rep(0, length(l2))),
+                 c(rep(0, length(l1)), l2))
+  
+  # disturbances
+  dist.init = parms[grep('dist', names(parms))]    
+  disturbs = diag(dist.init)
+  
+  # factor correlation
+  phi.init = matrix(c(cov0[1], cov0[2], cov0[2], cov0[3]), 2, 2)  #factor cov/correlation matrix
+  
+  # other calculations and log likelihood
+  sigtheta = lambda%*%phi.init%*%t(lambda) + disturbs
+  pq = dim(data)[2]  #in Bollen p + q (but for the purposes of this just p) = tr(data)
+  #out = -(log(det(sigtheta)) + tr(S%*%solve(sigtheta)) - log(det(S)) - pq)  #a reduced version; Bollen 1989 p.107
+  ll = ((-nrow(data)*pq/2)*log(2*pi)) - (nrow(data)/2)*(log(det(sigtheta)) + tr(S%*%solve(sigtheta)))  #should be same as Mplus H0 loglike
+  ll
+}
+```
+
+
+
+### Parallel Process Example
+
+```{r parallelProcess, eval=FALSE}
+
+# parallel process --------------------------------------------------------
+# See EXAMPLE 6.13 in Mplus User's Guide
+
+# let's simulate data with a negative slope average and positive correlation among intercepts and other process slopes
+set.seed(1234)
+n = 500
+timepoints = 4
+time = rep(0:3, times=n)
+subject = rep(1:n, each=4)
+
+# first we'll draw intercepts with overall mean .5 and -.5 for the two
+# processes, and let them have a slight correlation. Their variance is 1.
+intCorr = matrix(c(1,.2,.2,1), ncol=2) 
+colnames(intCorr) = rownames(intCorr) = c('i1', 'i2')
+intCorr
+
+interceptP1 = .5
+interceptP2 = -.5
+
+ranInts = MASS::mvrnorm(n, mu=c(0,0), Sigma = intCorr, empirical=T)
+ranInts = data.frame(ranInts)
+head(ranInts)
+cor(ranInts)
+colMeans(ranInts)
+
+# now create slopes with intercept/mean .4, -.4, but the same positive
+# relationship with their respective intercept. Their variances are also 1.
+slopeP1 = .4
+slopeP2 = -.4
+
+s1 = .3*ranInts$i2  + rnorm(n)
+s2 = .3*ranInts$i1  + rnorm(n)
+
+ranef = data.frame(ranInts, s1, s2)
+head(ranef)
+
+
+# so we have slight positive correlations among all random intercepts and slopes
+y1 = (interceptP1 + ranef$i1[subject]) + (slopeP1+ranef$s1[subject])*time + rnorm(n*timepoints, sd=.5)
+d1 = data.frame(Subject=subject, time=time, y1)
+head(d1)
+
+library(ggplot2)
+ggplot(aes(x=time, y=y1), data=d1) + 
+  geom_line(aes(group=Subject), alpha=.1) + 
+  geom_smooth(method='lm',color='red') +
+  lazerhawk::theme_trueMinimal()
+
+
+y2 = (interceptP2 + ranef$i2[subject]) + (slopeP2+ranef$s2[subject])*time + rnorm(n*timepoints, sd=.5)
+d2 = data.frame(Subject=subject, time=time, y2)
+
+# process 2 shows the downward overall trend as expected
+ggplot(aes(x=time, y=y2), data=d2) + 
+  geom_line(aes(group=Subject), alpha=.1) + 
+  geom_smooth(method='lm',color='red') +
+  lazerhawk::theme_trueMinimal()
+
+# Widen from long form for lavaan
+library(tidyr)
+negslopepospath1 = d1 %>% spread(time, y1)
+colnames(negslopepospath1) = c('Subject', paste0('y1', 1:4))
+head(negslopepospath1)
+
+negslopepospath2 = d2 %>% spread(time, y2)
+colnames(negslopepospath2) = c('Subject', paste0('y2', 1:4))
+
+# combine
+dparallel = dplyr::left_join(negslopepospath1, negslopepospath2)
+head(dparallel)
+
+mainModel = "
+i1 =~ 1*y11 + 1*y12 + 1*y13 + 1*y14
+s1 =~ 0*y11 + 1*y12 + 2*y13 + 3*y14
+
+
+i2 =~ 1*y21 + 1*y22 + 1*y23 + 1*y24
+s2 =~ 0*y21 + 1*y22 + 2*y23 + 3*y24
+
+s1 ~ i2
+s2 ~ i1
+"
+
+library(lavaan)
+mainRes  = growth(mainModel, data=dparallel)
+summary(mainRes)
+fscores = lavPredict(mainRes)
+broom::tidy(data.frame(fscores))
+lm(s2~., fscores)
+
+heatR::corrheat(cor(fscores))
+qplot(s1, i2, data=data.frame(fscores)) + geom_smooth(method='lm', se=F)
+fv = lavPredict(mainRes, 'ov')
+summary(mainRes, standardized=T)
+d3heatmap::d3heatmap(cor(fv, fscores))
+d3heatmap::d3heatmap(cor(select(dparallel, -Subject), ranef), Rowv = F, Colv = F)
+
+
+process1Model = "
+  i1 =~ 1*y11 + 1*y12 + 1*y13 + 1*y14
+  s1 =~ 0*y11 + 1*y12 + 2*y13 + 3*y14
+"
+p1Res = growth(process1Model, data=dparallel)
+fscoresP1 = lavPredict(p1Res)
+
+process2Model = "
+  i2 =~ 1*y21 + 1*y22 + 1*y23 + 1*y24
+  s2 =~ 0*y21 + 1*y22 + 2*y23 + 3*y24
+"
+p2Res = growth(process2Model, data=dparallel)
+fscoresP2 = lavPredict(p2Res)
+
+fscoresSeparate = data.frame(fscoresP1, fscoresP2)
+
+pathMod = "
+  s1 ~ i2
+  s2 ~ i1
+  
+  i1~~i2
+"
+
+pathModRes = sem(pathMod, data=fscoresSeparate, fixed.x = F)
+summary(pathModRes)  # you'd have come to the same conclusions
+summary(mainRes)
+```
+
+
+
+## Causal Bias
+
+> Consider what effects, that might conceivably have practical bearings, we conceive the object of our conception to have. Then, our conception of these effects is the whole of our conception of the object. 
+
+I figure I should note my stance on soi-disant *causal modeling* so that whatever I might say in this document is taken with the appropriate context. What follows is more or less a philosophical stance, perhaps a naïve and not very well developed one at that, despite my philosophy background from long ago, but one that I think is a safer perspective than others commonly held regarding causes and statistics.  Mostly this is just me jotting down some things I'm thinking about while working on this document, and perhaps I'll be able to spend more time with it later.
+
+To begin, no statistical model *by itself* will ever provide evidence of causal effects. This is a fact that cannot be disputed.  Statistical models of the sort we are usually interested in are inherently probabilistic, atheoretical in and of themselves, and wholly dependent on the data collected. No amount of fancy analysis or double-blind randomization will change the fact that in the end you have a probabilistic result, and one that is highly dependent on many assumptions both statistical and theoretical, as well as nuances of the data.  The data itself might suggest several statistical models that are essentially if not exactly equally adequate.  If you are using SEM or other approach to *discover* causal effects you will thus be unsuccessful, and as such, you should not be using the technique if that is the primary reason for doing so.
+
+Philosophically speaking, I also don't think the methods of scientific analysis, i.e. statistics, can be used to *prove* causal relations, and more so if one considers that we've been debating the nature of causality for thousands of years and have yet to come to a conclusion about its definition that everyone can agree on.  Such bold 'proof-like' and 'causal' claims, consistently shown to be wrong because they *must be* in order to be a scientific claim in the first place, have much to do with undermining public faith in scientific results.  However, if we can't entirely agree on what constitutes a causal relation in the first place, we definitely can't hope that there is some magical statistical technique that would help us determine it.
+
+As an example, available data should not convince you that smoking causes lung cancer, and that is because it doesn't.  If it did, everyone who ever smoked would have lung cancer.  This is a *deterministic* notion of causality, and there are others, but it is the one I think is used in everyday parlance. Using a *probabilistic* interpretation instead, e.g. a smoker is more likely to have cancer, just serves to emphasize the uncertainty that exists in the underlying model.  I'm perfectly okay with this, but many seem uncomfortable with any lack of certainty.  I might even say that smoking has an 'effect' on the likelihood of getting lung cancer[^afrsmoke]. In the end, all we have in the data are those that have lung cancer or not, and there is no uncertainty about them having it, nor does our knowledge of their smoking habits change the fact of whether they do.
+
+As another example, you can randomly assign people who have cancer to two groups- in one they take an aspirin every day, in the other they drink orange juice every day. You may then find that they are equally effective in terms of remission rates, but it would be silly to think the 'treatments' had any causal effect at all, even though the effects could be non-zero statistically. Randomization, which is assumed by many to have the magical ability to confer causality on a scientific endeavor, doesn't help the situation either.  In fact, it could be said that *control* is the key element in determining causal relations (a claim that like others is not without issue), and the random nature of assignment actually undermines that.  
+
+Modern health science is not removed from this issue, or even far removed from this example, and regularly finds 'effects' of drugs or behavior that have no causal relation to the phenomenon under study. This is especially the case with psychological phenomena, many of which to this day still have little or no tie to operational definitions based on physiology rather than behavior.  People even go so far as to ascribe an actual causal effect to nothing at all (placebo effect).
+
+I personally think it's somewhat misguided to think that a major goal of (at least most of working) science is to establish formal causal relations.  Its primary tool for weighing evidence, i.e. statistical modeling, certainly cannot do that. As much as we want control, which is one thing that could potentially establish causality, it eludes us, and problematically seems to beg for a human element to causality besides.  *Ceteris peribus* can only work for what is included in our models.  Furthermore, if we actually knew the cause of something, we definitely would not need a statistical model.  On the practical side, few seem to be engaging in science for reasons of determining causal effects (except perhaps in the discussion sections of papers), and rather do so to discover new potential explanations and predict something better than we did before.
+
+
+### Prediction
+
+A well-worn data set on which to test classification algorithms is the [MNIST hand written digits data](https://en.wikipedia.org/wiki/MNIST_database).  The methods use the pixel gray-scale information to classify an image of what are originally handwritten digits as being one of the values 0-9.  Modern approaches can get accurate classification *on test data* with less than 1% error.  If one's goal is to understand why the digits are the way they are, the algorithm cannot help you. And yet, a statistical approach can be extremely successful while still having nothing to say about the causal mechanisms influencing the target variable we wish to speak about. 
+
+If you can predict something with 99%+ accuracy, how much are you concerned about the underlying causal reality from a practical point of view? It depends on the nature of the research,  but this is in fact what I think is the primary *practical* goal of scientific endeavor, i.e. accurate prediction. It definitely is not about finding 'true' parameters and p-values.  In physical and related sciences there is often a confusion between deterministic models and causal understanding.  But knowing the functional relationship between variables doesn't in any way necessarily relate to the causal circumstances surrounding the situation under investigation.  As an example, we might be able to predict the trajectory of an asteroid in our solar system with high accuracy based on deterministic model, but such a model tells us nothing about how the asteroid got there in the first place.  That said, we care about that a lot less than whether the asteroid will impact the earth.
+
+In general our models are wrong, but they can work, and we'd prefer those that work better. That is something science can and does provide if it's conducted well, almost by default.  Models can even correspond to 'reality' as we currently understand it, but we all know that knowledge of reality changes as well, often due to scientific discoveries.  Which model will be closer to being correct now versus later is hard to say (Peirce figured this out long ago). In a lot of situations, I'd personally rather have something that works than have one of the 'true causes' and a model that leaves me little better than guessing.  Now let's say you have a 'causal' model and another model that uses other covariates, and yet they both predict equally well. What would be the basis for preferring one over the other? I think we'd all prefer the causal model, but what would tangibly be gained in the preference in many circumstances, and how will such knowledge be acted upon?  Outside of some obvious/more extreme instances, e.g. in disease prevention, it might be difficult to say.
+
+
+### Chance
+
+Another related point, *chance* definitely does not cause anything. There are mechanisms you do not know about contributing to the variability in the subject matter under study, but nothing from your results are *due to chance*.  Statistical models will always have uncertainty regarding them, and how much or how little there is depends on many things.  But just because we don't know what's going on, we cannot put the unknown as due to some magical notion akin to coincidence.
+
+
+### Other
+
+- There are people, who have been taken seriously in other contexts, actively devoting time, money and energy to determine a. that our current existence is a simulation, and b. to find a way to 'break out of it' (I suspect this has to do with them taking their experience at Burning Man too seriously).  However useless an endeavor this may be, if it was a simulation, where would any theory about causality reside then?
+
+- An interesting point noted by Pearl is that causal assumptions are not encoded via the paths/edges, which only note possible causal relations, but in the missing ones.  This reminds me of a chapter of the *Tao Te Ching*, that talks about the effectiveness of nothingness.  An example being that it is not the walls or physical aspects of a house, but the rooms, i.e. spaces, that make it an effective home.
+
+- If one adheres strictly to the *strong* causal assumptions for SEM, it is difficult for me to see where any discovery or exploration comes in.  In that perspective, one uses statistical tools to merely uncover the parameter values that are assumed to be non-zero.  I don't even see why one would even reference statistical significance, interval estimates etc., as the causal aspects are assumed to be true.  I'm not sure how the sampling variability, which could potentially result in conflicting causal understanding, is incorporated. <br>
+If you go to the *weak* causal assumption, where the parameter can take on a potentially infinite range of values, we now have something that is more practical and amenable to statistical analysis as traditionally engaged.  However, I don't know what definition of causality it is consistent with.  An example would be that for some model, one of the causal assumptions is that X causes Y, and that relationship may be weak or strong, positive or negative, possibly even indistinguishable from zero, but we won't know until we look at the data.  In other words, the effect could be A, its opposite, or not A.  This is in fact how SEM is practiced the vast majority of the time.  However, that doesn't sound like any causal claim is being made at all to me, and instead merely posits some correlation to be explored.  I'm fine with that, but I'd take issue that some causal assumption is given more credibility by the statistical result, which could have been anything and still have been consistent with the 'prior knowledge'.
+
+- As noted previously, the strong causal claims in SEM come from where we set paths equal to zero.  However, a far more realistic assumption is that every effect is non-zero, however trivially small.  Such models would be unidentifiable in SEM though.
+
+
+
+### Some references
+
+Practically anything by **Judea Pearl**, even though some of the above might seem like I'm entirely missing many of the points he tries to make.  On the contrary, I actually find it hard to disagree with Pearl, I just prefer to focus on the practical aspects of modeling, which in the end includes a statistical model that can exist independently of any causal notion, and on ways of improving such models.  He is very clear however, that structural models rest on untestable assumptions and statistical results.
+
+The quote at the beginning is by **C.S. Peirce**.  I note it because I am more interested in clear ideas, without which one cannot hope to even begin to understand causal relations, however defined.  The notion of a thing intimately entails *all* of its *practical effects*.  In other words, my definition of you must include how you are potentially able to act upon the universe, and in fact, my definition of you *is* what practical effects you have on the universe.  The lack of clear ideas in scientific research is a fundamental problem too often ignored.
+
+Philosophical, such as Aristotle, Hume, non-Western as well.
+
+
+
+## Software Revisited
+
+### Mplus
+
+Mplus is more or less the gold standard for SEM programming, and there is no SEM-specific package or suite of commands that has all the functionality seen with Mplus.
+
+#### Pros
+
+- Mplus can potentially do practically everything one would want to in the SEM setting
+- Help forum: among the best you'll come across in that the Muthens themselves are willing to answer practically any question quickly
+- Relatively cheap to upgrade/maintain
+- User manual has many, many working examples
+
+#### Cons
+
+- Cost: very expensive for initial purchase
+- License: Most universities will not have a campus-wide license
+- Data processing: This is not what Mplus is for, so don't
+- Exploration: the lack of a proper programming language environment makes it difficult to do model exploration. It would be easier to use the Mplusautomation in R than do this with Mplus (even the Mplus website suggests this)
+- User manual: None of the output is explained, which for some models is notably complicated. The simulated data examples are not very contextually helpful, and are overly optimistic relative to what researchers will actually face. Too much space is devoted to conceptually identical models with only minor syntax differences, which without explanation of the output differences, is not very helpful to users.
+- Closed source: not only that, it's only one programmer doing everything.
+
+#### Other
+
+It's not clear to me where the future of Mplus lies.  Bengt Muthén, the driving force behind Mplus has been emeritus faculty for some time now, and version 7 has been out without a full release longer than any previous version of Mplus. 'Minor' corrections are typically taking several months.  Meanwhile, many things that users commonly find confusing or could be made automatic are left unchanged.
+
+### R
+
+R does everything, SEM or otherwise. It even helps you use Mplus more efficiently. There's no reason not to use it for SEM.  Between the SEM-specific tools, and other packages that can fill in the remaining functionality, it can do any model Mplus can, and many of them better and more efficiently.
+
+What follows is a list of R packages for SEM on CRAN, put together by a simple search on 'structural equation model' at metacran. It is obviously not exhaustive, nor do I include packages that might do equivalent models (e.g. <span class="pack">lme4</span> can do latent growth curve models as mixed models, <span class="pack">flexmix</span> for mixture models), nor are github-only packages noted.  What should be clear is that R has well surpassed Mplus in what it can offer in the SEM world.
+
+<div style="font-size=6">
+- autoSEM
+- bnpa*
+- ctsem
+- CorReg
+- dlsem
+- dpa
+- EffectLiteR
+- faoutlier
+- fSRM
+- gesca
+- gimme
+- gof
+- gSEM
+- influence.SEM 
+- lavaan family: lavaan, blavaan, survey.lavaan, lavaan.shiny
+- lsl
+- lvnet
+- metaSEM
+- MIIVsem
+- Mplusautomation
+- nlsem
+- OpenMx
+- onyx
+- piecewiseSEM
+- plotSEMM
+- psych*
+- RAMpath*
+- RMediation 
+- regsem*
+- rsem
+- sem
+- semdiag
+- semds
+- semGOF
+- SEMID
+- semTools*
+- semPlot*
+- semPLS
+- semtree
+- sesem
+- simsem
+- sirt
+- sparseSEM
+- stablespec
+- strum
+- umx
+</div>
+
+\* Known connection to lavaan models. There may be many others.
+
+
+#### Pros
+
+- Cost: free
+- Development: source is freely available, issues are made known and tracked, and multiple people are involved in development.
+- Help forum: possibly several outlets for different packages.
+
+#### Cons
+
+I would say learning curve, but no one knows SEM syntax until they do it, and it will always be different from the syntax typically employed by a statistical program or programming language.  If your data is already processed and ready to go, it is no more difficult to run an SEM in R than Stata, and it will be *easier* than Mplus, Amos, etc.
+
+
+### Stata
+
+Stata was very late to the SEM game, and it's not going to do as much as Mplus, but it's pretty easy to use, and is a nice statistical tool besides.  Stata probably has more readily available functionality for instrumental variable regression and other econometrics oriented techniques, but that isn't part of or specific to their SEM commands, and has been around a long time.
+
+#### Pros
+
+- Cost: for the price of Mplus you get an entire statistical software package with vastly more functionality.
+- License: research universities are far more likely to have a campus-wide license for Stata
+- Help forum: the Stata community is generally very friendly and helpful
+
+#### Cons
+
+- Cost: still costs more than free
+- License: You still won't be able to take it home.
+- I have seen issues with SEM in Stata that otherwise run fine with lavaan or Mplus.
+- No SEM specific forum
+- If you are using Mplus and/or R, there is no reason to use Stata for SEM.
+
+### Other
+
+#### Other SEM-specific software
+
+Lisrel, EQS, Amos, which were popular in the past, are no longer viable these days, either largely no longer developed or restricted to a single operating system, and yet they still want you to shell out hundreds of dollars to use them.  SAS has some functionality but it's rarely used for SEM relative to the other options.  Other statistical programs have functionality, but they are relatively little used for standard models, and much less for SEM.
+
+#### Other Modeling Tools
+
+Within R one can do mixture/latent class models, growth mixture models, multilevel models, etc., and they will almost always provide more tools and output for understanding and exploring those models.  
+
+Similarly, Stata has a lot more to offer for many other non-SEM tools relative to SEM-specific software.  
+
+If you aren't doing SEM, there is zero reason to use software that was designed specifically for it.  The old adage of 'just because you can doesn't mean you should' applies. The programming time alone would be reason not to, but a great deal of additional functionality would be lost too.
+
+Python, which is the most popular data science tool outside of R, has minimal SEM capabilities presently, but I will update if I come across anything.
+
+
+#### Bayesian
+
+Any of these analysis could be run with Bayesian programming languages such as Stan or BUGS, and you could feel more confident about understanding the underlying uncertainty when there are many parameters relative to the sample size.
+
+
+
+## Resources
+
+This list serves only as a starting point, geared toward those that would be taking the workshop, though may be added to over time.
+
+
+### Graphical Models
+
+[Judea Pearl's website](http://bayes.cs.ucla.edu/jp_home.html): Includes papers and technical reports. 
+
+[Shalizi's text](http://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/ADAfaEPoV.pdf) Has a part on causal inference that summarizes a lot of work in Pearl, Spirtes et al., and others. It's a work in progress (indefinitely), and parts are incomplete, but what's there is useful.
+
+[UseR Series](http://link.springer.com/bookseries/6991): Contains texts on graphical models, Bayesian networks, and network analysis.
+
+
+### Potential Outcomes
+
+[Imai's website](http://imai.princeton.edu/projects/mechanisms.html): Papers and other info.
+
+
+
+### Measurement Models (including IRT)
+
+[Personality Project](http://personality-project.org/index.html): William Revelle's website and text on psychometric theory.
+
+Zinbarg et al. [Cronbach's α, Revelle's β, & McDonald's ω_H_: Their realations with each other and two alternative conceptualizations of reliability](http://avzy.personality-project.org/revelle/publications/zinbarg.revelle.pmet.05.pdf).
+
+[Jonathan Templin's ICPSR workshop notes](http://jonathantemplin.com/teaching/methodological-workshops/item-response-theory/item-response-theory-workshop-summer-2015-icpsr/)
+
+
+
+### Applied SEM
+
+Kline, Rex. (2016) *Principles and Practice of Structural Equation Modeling*. A very applied introduction that covers a lot of ground.  The latest edition finally includes explicit discussion of the more general graphical modeling framework within which SEM resides.
+
+Beaujean, A. A. (2014). [Latent variable modeling using R: A step by step guide](http://blogs.baylor.edu/rlatentvariable/). New York, NY: Routledge/Taylor and Francis. Lavaan based guide to SEM
+
+[SEMNET forum](http://www2.gsu.edu/~mkteer/semnet.html)
+
+
+
+### Nonparametric models
+
+Gershman & Blei (2011). A Tutorial on Bayesian Nonparametric Models.
+
+Griffiths & Ghahramani (2005). Infinite latent feature models and the Indian buffet process. 
+
+
+### lavaan
+
+[lavaan website](http://lavaan.ugent.be/)
+
+[lavaan google group](https://groups.google.com/forum/#!forum/lavaan)
+
+[Tutorial](http://lavaan.ugent.be/tutorial/tutorial.pdf) 
+
+[Bayesian estimation with lavaan](https://cran.r-project.org/package=blavaan)
+
+[Complex surveys with lavaan](https://cran.r-project.org/package=lavaan.survey)
+
+[Interactive lavaan](https://github.com/kylehamilton/lavaan.shiny)
+
+
+### Other SEM tools in R
+
+[semTools]: Excellent set of tools for reliability assessment, measurement invariance, fit, simulation etc.
+
+[semPlot]: Visualize your lavaan models.
+
+[MetaCran]: [search results](https://www.r-pkg.org/search.html?q=structural+equation+modeling).
+
+
+
+[^afrsmoke]: Though it might be less of an effect than simply [being African-American](http://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0050185), something I'm sure we can agree is not a causal effect.

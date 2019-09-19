@@ -1,2 +1,37 @@
-book_filename: "latent"
-chapter_name: "Chapter "
+book_filename: "sem_book"
+language:
+  ui:
+    chapter_name: "Chapter "
+output_dir: "docs"
+delete_merged_file: true
+
+
+rmd_files: [
+  "index.Rmd",
+  
+  # Getting Started
+  "preface.Rmd",
+  "intro.Rmd",
+  "intro2R.Rmd",
+
+  # Part I: Core SEM
+   'graphical-models.Rmd',
+   'latent-variables.Rmd',
+   'sem.Rmd',
+
+  # Part II: Common Extensions
+  'growth-curves.Rmd',
+  'mixture-models.Rmd',
+  'item-response-theory.Rmd',
+
+  # Part III: Going Further
+  'topic-models.Rmd',
+  'bayesian-nonparametric-models.Rmd',
+  'other.Rmd',
+
+  # Other
+   'so_long.Rmd',
+   # 'exercises.Rmd'
+   'appendix.Rmd'
+  #'references.Rmd'
+]

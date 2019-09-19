@@ -1,0 +1,3 @@
+# Exercises
+
+Exercises are in a separate document [here](exercises/exercises.html).
